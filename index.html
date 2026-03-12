@@ -12,24 +12,25 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f8f7f4;
+  --bg: #f6f9fc;
   --surface: #ffffff;
-  --border: #e6e3dd;
-  --border-light: #f0eeea;
-  --text: #1a1917;
-  --text-secondary: #5c5954;
-  --text-tertiary: #9b9790;
+  --border: #e3e8ee;
+  --border-light: #edf2f7;
+  --text: #0a2540;
+  --text-secondary: #425466;
+  --text-tertiary: #8898aa;
   --accent: #2d5a27;
   --accent-soft: #eef3ec;
   --accent-glow: rgba(45, 90, 39, 0.06);
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.03);
-  --shadow-md: 0 2px 4px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
-  --shadow-lg: 0 4px 8px rgba(0,0,0,0.04), 0 20px 48px rgba(0,0,0,0.07);
+  --shadow-sm: 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1px 0 rgba(0,0,0,.07);
+  --shadow-md: 0 6px 12px -2px rgba(50,50,93,.12), 0 3px 7px -3px rgba(0,0,0,.08);
+  --shadow-lg: 0 13px 27px -5px rgba(50,50,93,.2), 0 8px 16px -8px rgba(0,0,0,.15);
 
   --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --content-width: 1080px;
 }
 
 body {
@@ -42,22 +43,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---- NAV ---- */
-nav {
-  padding: 20px 24px;
-  font-family: var(--font-sans);
+/* ---- STICKY NAV ---- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 24px;
+  background: rgba(246, 249, 252, 0.8);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border);
 }
 
-nav a {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--text-tertiary);
+.site-nav-inner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 56px;
+}
+
+.site-nav a {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
   text-decoration: none;
   transition: color 0.25s var(--ease);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
-nav a:hover { color: var(--accent); }
+.site-nav a:hover { color: var(--accent); }
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
 
 /* ---- HERO ---- */
 .hero {
@@ -128,7 +150,7 @@ main {
 .pointer-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   margin-bottom: 16px;
   position: relative;
   box-shadow: var(--shadow-sm);
@@ -136,7 +158,7 @@ main {
 }
 
 .pointer-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .pointer-card.open {
@@ -169,16 +191,22 @@ main {
   align-items: center;
   gap: 18px;
   transition: background 0.25s var(--ease);
-  border-radius: 16px;
+  border-radius: 12px;
   user-select: none;
 }
 
 .pointer-card.open .pointer-header {
-  border-radius: 16px 16px 0 0;
+  border-radius: 12px 12px 0 0;
 }
 
 .pointer-header:hover {
   background: rgba(45, 90, 39, 0.02);
+}
+
+.pointer-header:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 12px;
 }
 
 .pointer-num {
@@ -289,9 +317,9 @@ main {
 
 /* ---- PRACTICE AREA ---- */
 .practice-area {
-  background: linear-gradient(135deg, #f5f4f0 0%, #f0efeb 100%);
+  background: linear-gradient(135deg, #f0f4f8 0%, #edf1f5 100%);
   border: 1px solid var(--border-light);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 32px 28px;
   margin-top: 18px;
   min-height: 180px;
@@ -356,7 +384,7 @@ main {
   border-radius: 50%;
   background: var(--text);
   transition: all 1.5s var(--ease);
-  box-shadow: 0 0 0 0 rgba(26, 25, 23, 0.1);
+  box-shadow: 0 0 0 0 rgba(10, 37, 64, 0.1);
 }
 
 .focal-dot.dissolve {
@@ -383,7 +411,7 @@ main {
   letter-spacing: 0.01em;
   margin-top: 8px;
   transition: all 0.25s var(--ease);
-  box-shadow: 0 1px 3px rgba(45, 90, 39, 0.2);
+  box-shadow: 0 2px 5px rgba(45, 90, 39, 0.2);
 }
 
 .practice-btn:hover {
@@ -395,6 +423,11 @@ main {
 .practice-btn:active {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(45, 90, 39, 0.2);
+}
+
+.practice-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .practice-btn.outline {
@@ -414,6 +447,11 @@ main {
 .practice-btn.outline:active {
   transform: translateY(0);
   box-shadow: none;
+}
+
+.practice-btn.outline:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* ---- PAUSE ---- */
@@ -484,6 +522,40 @@ footer a {
 
 footer a:hover { opacity: 0.7; }
 
+footer a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- REDUCED MOTION ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .breath-ring {
+    animation: none;
+    opacity: 0.25;
+  }
+
+  .pointer-body {
+    transition: none;
+  }
+
+  .practice-step.visible {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .focal-dot {
+    transition: none;
+  }
+}
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 640px) {
   .hero { padding: 40px 20px 48px; }
@@ -511,13 +583,23 @@ footer a:hover { opacity: 0.7; }
   .reflection-content .practice-btn {
     margin-left: -16px;
   }
+
+  .site-nav-inner {
+    height: 48px;
+  }
+
+  .site-nav a {
+    font-size: 0.82rem;
+  }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="https://nickxma.github.io/paradox-of-acceptance/">← Paradox of Acceptance</a>
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <div class="site-nav-inner">
+    <a href="https://nickxma.github.io/paradox-of-acceptance/">Paradox of Acceptance</a>
+  </div>
 </nav>
 
 <div class="hero">
@@ -531,13 +613,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 1. Looking for the Looker -->
   <div class="pointer-card" id="p-looker">
-    <div class="pointer-header" onclick="toggle('p-looker')">
+    <div class="pointer-header" onclick="toggle('p-looker')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-looker')}">
       <div class="pointer-num">01</div>
       <div class="pointer-meta">
         <h2>Looking for the Looker</h2>
         <p class="pointer-tagline">Turn your attention toward its source</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -597,13 +679,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 2. You Are Not This Next Thought -->
   <div class="pointer-card" id="p-thought">
-    <div class="pointer-header" onclick="toggle('p-thought')">
+    <div class="pointer-header" onclick="toggle('p-thought')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-thought')}">
       <div class="pointer-num">02</div>
       <div class="pointer-meta">
         <h2>You Are Not This Next Thought</h2>
         <p class="pointer-tagline">Wait for a thought and watch what happens</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -659,13 +741,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 3. Beginning Again -->
   <div class="pointer-card" id="p-begin">
-    <div class="pointer-header" onclick="toggle('p-begin')">
+    <div class="pointer-header" onclick="toggle('p-begin')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-begin')}">
       <div class="pointer-num">03</div>
       <div class="pointer-meta">
         <h2>Beginning Again</h2>
         <p class="pointer-tagline">The moment you notice you're lost is the moment you're found</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -722,13 +804,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 4. What Remains When There Is No Problem to Solve? -->
   <div class="pointer-card" id="p-remains">
-    <div class="pointer-header" onclick="toggle('p-remains')">
+    <div class="pointer-header" onclick="toggle('p-remains')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-remains')}">
       <div class="pointer-num">04</div>
       <div class="pointer-meta">
         <h2>What Remains When There Is No Problem to Solve?</h2>
         <p class="pointer-tagline">Drop everything and notice what's left</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -784,13 +866,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 5. The Awareness Is the Same -->
   <div class="pointer-card" id="p-same">
-    <div class="pointer-header" onclick="toggle('p-same')">
+    <div class="pointer-header" onclick="toggle('p-same')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-same')}">
       <div class="pointer-num">05</div>
       <div class="pointer-meta">
         <h2>The Awareness Is the Same</h2>
         <p class="pointer-tagline">Notice what doesn't change between pleasure and pain</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -846,13 +928,13 @@ footer a:hover { opacity: 0.7; }
 
   <!-- 6. Less, Not More -->
   <div class="pointer-card" id="p-less">
-    <div class="pointer-header" onclick="toggle('p-less')">
+    <div class="pointer-header" onclick="toggle('p-less')" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle('p-less')}">
       <div class="pointer-num">06</div>
       <div class="pointer-meta">
         <h2>Resting as Awareness Is Less, Not More</h2>
         <p class="pointer-tagline">You're not trying to add something — you're trying to stop</p>
       </div>
-      <div class="pointer-toggle">
+      <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
       </div>
     </div>
@@ -916,7 +998,9 @@ footer a:hover { opacity: 0.7; }
 function toggle(id) {
   var card = document.getElementById(id);
   var wasOpen = card.classList.contains('open');
+  var header = card.querySelector('.pointer-header');
   card.classList.toggle('open');
+  header.setAttribute('aria-expanded', !wasOpen);
   if (!wasOpen) {
     setTimeout(function() {
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
