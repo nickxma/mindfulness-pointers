@@ -12,13 +12,24 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f7f6f3;
+  --bg: #f8f7f4;
   --surface: #ffffff;
-  --border: #e4e2dc;
-  --text: #1a1a18;
-  --text-muted: #6b6966;
+  --border: #e6e3dd;
+  --border-light: #f0eeea;
+  --text: #1a1917;
+  --text-secondary: #5c5954;
+  --text-tertiary: #9b9790;
   --accent: #2d5a27;
-  --accent-light: #eef3ec;
+  --accent-soft: #eef3ec;
+  --accent-glow: rgba(45, 90, 39, 0.06);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.03);
+  --shadow-md: 0 2px 4px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
+  --shadow-lg: 0 4px 8px rgba(0,0,0,0.04), 0 20px 48px rgba(0,0,0,0.07);
+
+  --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
 body {
@@ -27,313 +38,479 @@ body {
   color: var(--text);
   min-height: 100vh;
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---- NAV ---- */
 nav {
   padding: 20px 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-sans);
 }
 
 nav a {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.25s var(--ease);
+  letter-spacing: 0.01em;
 }
 
 nav a:hover { color: var(--accent); }
 
-header {
+/* ---- HERO ---- */
+.hero {
   text-align: center;
-  padding: 40px 24px 48px;
+  padding: 56px 24px 60px;
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
 }
 
-h1 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: clamp(2rem, 5vw, 2.8rem);
+.hero-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(2.2rem, 5vw, 3rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-count {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 5px 14px;
+  border-radius: 20px;
   margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
 }
 
-.intro {
+.hero .intro {
   font-size: 1.05rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.8;
-}
-
-main {
-  max-width: 680px;
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 0 24px 80px;
 }
 
-/* Pointer Cards */
+/* ---- MAIN ---- */
+main {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+/* ---- POINTER CARDS ---- */
 .pointer-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  transition: border-color 0.3s;
+  margin-bottom: 16px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease);
+}
+
+.pointer-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .pointer-card.open {
-  border-color: var(--accent);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border);
+}
+
+.pointer-card.open::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+  opacity: 0;
+  animation: accentIn 0.4s 0.1s var(--ease) forwards;
+}
+
+@keyframes accentIn {
+  from { opacity: 0; top: 50%; bottom: 50%; }
+  to { opacity: 1; top: 16px; bottom: 16px; }
 }
 
 .pointer-header {
-  padding: 24px 28px;
+  padding: 26px 28px;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  transition: background 0.2s;
+  align-items: center;
+  gap: 18px;
+  transition: background 0.25s var(--ease);
+  border-radius: 16px;
+  user-select: none;
+}
+
+.pointer-card.open .pointer-header {
+  border-radius: 16px 16px 0 0;
 }
 
 .pointer-header:hover {
-  background: rgba(45, 90, 39, 0.03);
+  background: rgba(45, 90, 39, 0.02);
 }
 
-.pointer-meta { flex: 1; }
+.pointer-num {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+  transition: color 0.3s var(--ease);
+}
+
+.pointer-card.open .pointer-num {
+  color: var(--accent);
+}
+
+.pointer-meta { flex: 1; min-width: 0; }
 
 .pointer-meta h2 {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 4px;
+  font-family: var(--font-sans);
+  font-size: 1.08rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  margin-bottom: 2px;
 }
 
 .pointer-tagline {
-  font-size: 0.92rem;
-  color: var(--text-muted);
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
   font-style: italic;
+  line-height: 1.5;
 }
 
 .pointer-toggle {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  transition: all 0.3s;
+  color: var(--text-tertiary);
   flex-shrink: 0;
-  margin-top: 2px;
+  transition: all 0.35s var(--ease);
+}
+
+.pointer-toggle svg {
+  transition: transform 0.35s var(--ease);
 }
 
 .pointer-card.open .pointer-toggle {
   background: var(--accent);
-  color: white;
   border-color: var(--accent);
+  color: white;
+}
+
+.pointer-card.open .pointer-toggle svg {
   transform: rotate(45deg);
 }
 
+/* Accordion — CSS Grid for smooth animation */
 .pointer-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease);
 }
 
 .pointer-card.open .pointer-body {
-  max-height: 4000px;
+  grid-template-rows: 1fr;
+}
+
+.pointer-body-inner {
+  overflow: hidden;
 }
 
 .pointer-content {
-  padding: 0 28px 32px;
-  border-top: 1px solid var(--border);
+  padding: 0 28px 36px;
+  padding-left: 74px; /* align with text after number */
+  border-top: 1px solid var(--border-light);
 }
 
-/* Sections */
+/* ---- SECTIONS ---- */
 .section {
   margin-top: 32px;
 }
 
 .section-label {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: 0.7rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .section p {
-  font-size: 1.05rem;
-  line-height: 1.8;
+  font-size: 1.02rem;
+  line-height: 1.85;
   margin-bottom: 14px;
+  color: var(--text);
 }
 
 .section p:last-child { margin-bottom: 0; }
 
-/* Practice Area */
+/* ---- PRACTICE AREA ---- */
 .practice-area {
-  background: var(--bg);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f4f0 0%, #f0efeb 100%);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
   padding: 32px 28px;
-  margin-top: 16px;
+  margin-top: 18px;
   min-height: 180px;
 }
 
 .practice-step {
   display: none;
-  animation: stepIn 0.5s ease;
+  opacity: 0;
+  transform: translateY(6px);
 }
 
 .practice-step.visible {
   display: block;
+  animation: stepReveal 0.5s var(--ease) forwards;
 }
 
+@keyframes stepReveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Segmented progress bar */
 .step-progress {
   display: flex;
-  gap: 6px;
-  margin-bottom: 20px;
+  gap: 4px;
+  margin-bottom: 24px;
 }
 
-.step-progress .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.step-progress .seg {
+  height: 2.5px;
+  flex: 1;
   background: var(--border);
-  transition: background 0.3s;
+  border-radius: 2px;
+  transition: background 0.4s var(--ease), opacity 0.4s var(--ease);
 }
 
-.step-progress .dot.active {
+.step-progress .seg.active {
   background: var(--accent);
 }
 
-.step-progress .dot.done {
+.step-progress .seg.done {
   background: var(--accent);
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .practice-step p {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   line-height: 1.85;
   margin-bottom: 14px;
 }
 
-/* Focal dot */
+/* ---- FOCAL DOT ---- */
 .focal-wrap {
   display: flex;
   justify-content: center;
-  padding: 20px 0 12px;
+  padding: 24px 0 16px;
 }
 
 .focal-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--text);
-  transition: all 1.2s ease;
+  transition: all 1.5s var(--ease);
+  box-shadow: 0 0 0 0 rgba(26, 25, 23, 0.1);
 }
 
 .focal-dot.dissolve {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   background: transparent;
-  border: 1px solid var(--border);
-  opacity: 0.4;
+  border: 1.5px solid var(--border);
+  opacity: 0.3;
+  box-shadow: 0 0 24px 8px var(--accent-glow);
 }
 
-/* Buttons */
+/* ---- BUTTONS ---- */
 .practice-btn {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-sans);
   display: inline-block;
   background: var(--accent);
   color: white;
   border: none;
-  padding: 11px 24px;
-  border-radius: 8px;
-  font-size: 0.88rem;
+  padding: 11px 28px;
+  border-radius: 100px;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  letter-spacing: 0.01em;
   margin-top: 8px;
+  transition: all 0.25s var(--ease);
+  box-shadow: 0 1px 3px rgba(45, 90, 39, 0.2);
 }
 
-.practice-btn:hover { background: #234a1f; }
+.practice-btn:hover {
+  background: #234a1f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.25);
+}
+
+.practice-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(45, 90, 39, 0.2);
+}
 
 .practice-btn.outline {
-  background: transparent;
+  background: var(--surface);
   color: var(--accent);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
+  box-shadow: none;
 }
 
 .practice-btn.outline:hover {
-  background: var(--accent-light);
+  background: var(--accent-soft);
   border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(45, 90, 39, 0.1);
+  transform: translateY(-1px);
 }
 
-/* Pause */
+.practice-btn.outline:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ---- PAUSE ---- */
 .pause-content {
   text-align: center;
-  padding: 36px 0;
+  padding: 40px 0;
 }
 
-.breathing-dots {
-  font-size: 1.5rem;
-  letter-spacing: 0.4em;
-  color: var(--text-muted);
-  margin-bottom: 28px;
-  animation: breathe 4s ease-in-out infinite;
+.breath-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  margin: 0 auto 32px;
+  animation: breatheRing 5s ease-in-out infinite;
+}
+
+@keyframes breatheRing {
+  0%, 100% { transform: scale(0.7); opacity: 0.12; border-width: 2px; }
+  50% { transform: scale(1); opacity: 0.35; border-width: 1.5px; }
 }
 
 .pause-question {
   font-style: italic;
-  color: var(--text-muted);
-  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 1.08rem;
+  line-height: 1.6;
   margin-bottom: 0;
 }
 
-@keyframes breathe {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.85; }
+/* ---- REFLECTION ---- */
+.reflection-content {
+  position: relative;
+  padding-left: 20px;
+  border-left: 2px solid var(--accent-soft);
 }
 
-/* Reflection */
+.reflection-content .section-label {
+  margin-bottom: 12px;
+}
+
 .reflection-content p {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   line-height: 1.85;
   margin-bottom: 16px;
 }
 
-/* Footer */
+.reflection-content .practice-btn {
+  margin-top: 8px;
+  margin-left: -20px;
+}
+
+/* ---- FOOTER ---- */
 footer {
   border-top: 1px solid var(--border);
-  padding: 40px 24px;
+  padding: 48px 24px;
   text-align: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
 }
 
 footer a {
   color: var(--accent);
   text-decoration: none;
+  transition: opacity 0.2s;
 }
 
-footer a:hover { text-decoration: underline; }
+footer a:hover { opacity: 0.7; }
 
-@keyframes stepIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ---- RESPONSIVE ---- */
+@media (max-width: 640px) {
+  .hero { padding: 40px 20px 48px; }
+  .hero h1 { font-size: 2rem; }
+  main { padding: 0 16px 72px; }
 
-@media (max-width: 600px) {
-  header { padding: 30px 20px 36px; }
-  main { padding: 0 16px 60px; }
-  .pointer-header { padding: 20px 18px; }
-  .pointer-content { padding: 0 18px 28px; }
+  .pointer-header {
+    padding: 22px 20px;
+    gap: 14px;
+  }
+
+  .pointer-num { width: 24px; font-size: 0.68rem; }
+
+  .pointer-content {
+    padding: 0 20px 28px;
+    padding-left: 20px; /* stack on mobile */
+  }
+
   .practice-area { padding: 24px 18px; }
+
+  .reflection-content {
+    padding-left: 16px;
+  }
+
+  .reflection-content .practice-btn {
+    margin-left: -16px;
+  }
 }
 </style>
 </head>
@@ -343,66 +520,73 @@ footer a:hover { text-decoration: underline; }
   <a href="https://nickxma.github.io/paradox-of-acceptance/">← Paradox of Acceptance</a>
 </nav>
 
-<header>
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-count">6 Pointers</div>
   <h1>Pointers</h1>
   <p class="intro">In contemplative practice, a pointer is an instruction that can't be understood by thinking about it. It points at something you have to notice directly. Each one below includes a guided practice you can try right now.</p>
-</header>
+</div>
 
 <main>
 
   <!-- 1. Looking for the Looker -->
   <div class="pointer-card" id="p-looker">
     <div class="pointer-header" onclick="toggle('p-looker')">
+      <div class="pointer-num">01</div>
       <div class="pointer-meta">
         <h2>Looking for the Looker</h2>
         <p class="pointer-tagline">Turn your attention toward its source</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>Right now, you're aware of something. These words, the screen, the room around you. In the ordinary experience of being conscious, there seems to be a structure: you, the subject, are over here — behind your eyes, inside your head — and everything else is out there.</p>
-          <p>This pointer asks you to investigate that structure directly. Not to think about whether it holds up. Not to form a view. Just to look.</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-1">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Pick something to look at. Your hand, a spot on the wall, the edge of your screen. Let your attention rest on it for a moment.</p>
-              <div class="focal-wrap"><div class="focal-dot" id="focal"></div></div>
-              <p>Just notice what it's like to look at something.</p>
-              <button class="practice-btn" onclick="goStep(1, 2)">Ready</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Notice the structure of what's happening. There seems to be <em>you</em> — the one doing the looking — and <em>it</em> — the thing being looked at. A subject here, an object there.</p>
-              <p>That duality feels so obvious it's barely worth stating.</p>
-              <button class="practice-btn" onclick="goStep(1, 3)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>Now — gently, without thinking about it — try to find what's doing the looking. Not with your eyes. This isn't visual. Just turn your attention toward wherever the looking seems to be coming from. Don't reach for an answer. Don't explain it to yourself.</p>
-              <p>Take a few seconds. There's no rush.</p>
-              <button class="practice-btn" onclick="goStep(1, 4)">I looked</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">What did you find?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>Right now, you're aware of something. These words, the screen, the room around you. In the ordinary experience of being conscious, there seems to be a structure: you, the subject, are over here — behind your eyes, inside your head — and everything else is out there.</p>
+            <p>This pointer asks you to investigate that structure directly. Not to think about whether it holds up. Not to form a view. Just to look.</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-1">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Pick something to look at. Your hand, a spot on the wall, the edge of your screen. Let your attention rest on it for a moment.</p>
+                <div class="focal-wrap"><div class="focal-dot" id="focal"></div></div>
+                <p>Just notice what it's like to look at something.</p>
+                <button class="practice-btn" onclick="goStep(1, 2)">Ready</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(1, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>Most people report one of two things. Either the sense of a looker vanished the moment they searched for it — like trying to bite your own teeth. Or they noticed a brief shift: the boundary between "in here" and "out there" flickered, and for a moment there was just seeing, without a seer.</p>
-                <p>This is what the pointer points at. Not an idea about awareness or selfhood, but a direct observation: the feeling of being a subject — of being <em>behind</em> your eyes looking out — doesn't hold up under inspection. When you actually look for it, there's nothing solid there.</p>
-                <p>That doesn't settle any philosophical question. But it points at something worth investigating: the possibility that the subject-object structure of experience, which feels like the most basic fact about being conscious, might be more like a habit of attention than a feature of reality.</p>
-                <button class="practice-btn outline" onclick="resetPractice(1)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Notice the structure of what's happening. There seems to be <em>you</em> — the one doing the looking — and <em>it</em> — the thing being looked at. A subject here, an object there.</p>
+                <p>That duality feels so obvious it's barely worth stating.</p>
+                <button class="practice-btn" onclick="goStep(1, 3)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>Now — gently, without thinking about it — try to find what's doing the looking. Not with your eyes. This isn't visual. Just turn your attention toward wherever the looking seems to be coming from. Don't reach for an answer. Don't explain it to yourself.</p>
+                <p>Take a few seconds. There's no rush.</p>
+                <button class="practice-btn" onclick="goStep(1, 4)">I looked</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">What did you find?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(1, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>Most people report one of two things. Either the sense of a looker vanished the moment they searched for it — like trying to bite your own teeth. Or they noticed a brief shift: the boundary between "in here" and "out there" flickered, and for a moment there was just seeing, without a seer.</p>
+                  <p>This is what the pointer points at. Not an idea about awareness or selfhood, but a direct observation: the feeling of being a subject — of being <em>behind</em> your eyes looking out — doesn't hold up under inspection. When you actually look for it, there's nothing solid there.</p>
+                  <p>That doesn't settle any philosophical question. But it points at something worth investigating: the possibility that the subject-object structure of experience, which feels like the most basic fact about being conscious, might be more like a habit of attention than a feature of reality.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(1)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -414,52 +598,57 @@ footer a:hover { text-decoration: underline; }
   <!-- 2. You Are Not This Next Thought -->
   <div class="pointer-card" id="p-thought">
     <div class="pointer-header" onclick="toggle('p-thought')">
+      <div class="pointer-num">02</div>
       <div class="pointer-meta">
         <h2>You Are Not This Next Thought</h2>
         <p class="pointer-tagline">Wait for a thought and watch what happens</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>Right now, thoughts are arising in your mind. Maybe about what you just read. Maybe about something entirely unrelated. In the ordinary experience of thinking, there's an assumption so deep it's almost invisible: that these thoughts are yours. That you are the thinker. That the voice in your head is you.</p>
-          <p>This pointer asks you to test that assumption directly.</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-2">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Close your eyes for a moment, or soften your gaze. Wait for a thought to arrive. Don't go looking for one. Just wait, the way you'd wait for a bus.</p>
-              <button class="practice-btn" onclick="goStep(2, 2)">A thought came</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>A thought appeared — a word, an image, a fragment of planning or remembering. Now notice: did you choose it? Did you decide to think that specific thing at that specific moment? Or did it just appear, the way a sound appears in a room?</p>
-              <button class="practice-btn" onclick="goStep(2, 3)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>Wait for the next one. Same question. Watch it arrive. Notice that you didn't send for it. It showed up on its own, and now it's here, and soon it will dissolve and be replaced by another one you also didn't choose.</p>
-              <button class="practice-btn" onclick="goStep(2, 4)">I noticed</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">If you didn't choose the thought, in what sense is it yours?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>Right now, thoughts are arising in your mind. Maybe about what you just read. Maybe about something entirely unrelated. In the ordinary experience of thinking, there's an assumption so deep it's almost invisible: that these thoughts are yours. That you are the thinker. That the voice in your head is you.</p>
+            <p>This pointer asks you to test that assumption directly.</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-2">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Close your eyes for a moment, or soften your gaze. Wait for a thought to arrive. Don't go looking for one. Just wait, the way you'd wait for a bus.</p>
+                <button class="practice-btn" onclick="goStep(2, 2)">A thought came</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(2, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>Most people notice that thoughts arrive uninvited. You didn't choose them. They appeared in consciousness the way sounds appear in a room — you can hear them, but you didn't produce them. They arise, persist briefly, and dissolve on their own schedule.</p>
-                <p>If the thought arrived by itself, and you simply noticed it, then the voice in your head — the one that feels like "you" — might be less like an author and more like an audience. You're not generating your thoughts. You're watching them appear.</p>
-                <p>This doesn't mean thoughts are meaningless or that you shouldn't engage with them. It means that the identification — the sense that <em>I am the one thinking</em> — is worth questioning. The thinker might be another thought.</p>
-                <button class="practice-btn outline" onclick="resetPractice(2)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>A thought appeared — a word, an image, a fragment of planning or remembering. Now notice: did you choose it? Did you decide to think that specific thing at that specific moment? Or did it just appear, the way a sound appears in a room?</p>
+                <button class="practice-btn" onclick="goStep(2, 3)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>Wait for the next one. Same question. Watch it arrive. Notice that you didn't send for it. It showed up on its own, and now it's here, and soon it will dissolve and be replaced by another one you also didn't choose.</p>
+                <button class="practice-btn" onclick="goStep(2, 4)">I noticed</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">If you didn't choose the thought, in what sense is it yours?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(2, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>Most people notice that thoughts arrive uninvited. You didn't choose them. They appeared in consciousness the way sounds appear in a room — you can hear them, but you didn't produce them. They arise, persist briefly, and dissolve on their own schedule.</p>
+                  <p>If the thought arrived by itself, and you simply noticed it, then the voice in your head — the one that feels like "you" — might be less like an author and more like an audience. You're not generating your thoughts. You're watching them appear.</p>
+                  <p>This doesn't mean thoughts are meaningless or that you shouldn't engage with them. It means that the identification — the sense that <em>I am the one thinking</em> — is worth questioning. The thinker might be another thought.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(2)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -471,53 +660,58 @@ footer a:hover { text-decoration: underline; }
   <!-- 3. Beginning Again -->
   <div class="pointer-card" id="p-begin">
     <div class="pointer-header" onclick="toggle('p-begin')">
+      <div class="pointer-num">03</div>
       <div class="pointer-meta">
         <h2>Beginning Again</h2>
         <p class="pointer-tagline">The moment you notice you're lost is the moment you're found</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>Every meditator knows this experience: you sit down to practice, you follow the breath or rest in awareness, and then at some point — maybe ten seconds later, maybe ten minutes — you realize you've been completely lost in thought. You were gone. Now you're back.</p>
-          <p>Most people treat that moment as a failure. This pointer says it's the whole practice.</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-3">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Right now, just notice that you're here. Reading this. Aware. Present. You know what this feels like — the simple fact of being conscious in this moment.</p>
-              <button class="practice-btn" onclick="goStep(3, 2)">I'm here</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>At some point — maybe already, maybe in a few seconds — your mind will wander. A thought will pull you in. Planning, remembering, narrating. You won't notice it happening. That's the nature of distraction: it's invisible until it's over.</p>
-              <button class="practice-btn" onclick="goStep(3, 3)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>At some point after that, you'll notice. You'll realize: <em>I was gone. Now I'm back.</em> That moment — the noticing — is the practice. Not the sustained focus that came before. Not the wandering. The return. That's it.</p>
-              <p>There is no distance between being lost and being found. The gap is always zero.</p>
-              <button class="practice-btn" onclick="goStep(3, 4)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">How far away were you, really?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>Every meditator knows this experience: you sit down to practice, you follow the breath or rest in awareness, and then at some point — maybe ten seconds later, maybe ten minutes — you realize you've been completely lost in thought. You were gone. Now you're back.</p>
+            <p>Most people treat that moment as a failure. This pointer says it's the whole practice.</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-3">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Right now, just notice that you're here. Reading this. Aware. Present. You know what this feels like — the simple fact of being conscious in this moment.</p>
+                <button class="practice-btn" onclick="goStep(3, 2)">I'm here</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(3, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>The moment of "waking up" from thought is itself the goal of meditation. Not sustained concentration. Not the absence of thought. Just this: recognizing that you were gone and noticing that you're back. It happens naturally. You can't force it.</p>
-                <p>The interesting thing is that the gap between being lost and being found is always exactly zero. There's no distance to travel. You don't climb back to awareness — you simply notice it's still here, the way you notice the sky is still above you when you stop looking at the ground.</p>
-                <p>This is why it's called "beginning again." Every moment of recognition is complete in itself. You're always one noticing away from being fully present. And that noticing is available regardless of how long you were gone or what you were lost in.</p>
-                <button class="practice-btn outline" onclick="resetPractice(3)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>At some point — maybe already, maybe in a few seconds — your mind will wander. A thought will pull you in. Planning, remembering, narrating. You won't notice it happening. That's the nature of distraction: it's invisible until it's over.</p>
+                <button class="practice-btn" onclick="goStep(3, 3)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>At some point after that, you'll notice. You'll realize: <em>I was gone. Now I'm back.</em> That moment — the noticing — is the practice. Not the sustained focus that came before. Not the wandering. The return. That's it.</p>
+                <p>There is no distance between being lost and being found. The gap is always zero.</p>
+                <button class="practice-btn" onclick="goStep(3, 4)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">How far away were you, really?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(3, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>The moment of "waking up" from thought is itself the goal of meditation. Not sustained concentration. Not the absence of thought. Just this: recognizing that you were gone and noticing that you're back. It happens naturally. You can't force it.</p>
+                  <p>The interesting thing is that the gap between being lost and being found is always exactly zero. There's no distance to travel. You don't climb back to awareness — you simply notice it's still here, the way you notice the sky is still above you when you stop looking at the ground.</p>
+                  <p>This is why it's called "beginning again." Every moment of recognition is complete in itself. You're always one noticing away from being fully present. And that noticing is available regardless of how long you were gone or what you were lost in.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(3)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -529,52 +723,57 @@ footer a:hover { text-decoration: underline; }
   <!-- 4. What Remains When There Is No Problem to Solve? -->
   <div class="pointer-card" id="p-remains">
     <div class="pointer-header" onclick="toggle('p-remains')">
+      <div class="pointer-num">04</div>
       <div class="pointer-meta">
         <h2>What Remains When There Is No Problem to Solve?</h2>
         <p class="pointer-tagline">Drop everything and notice what's left</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>Most of waking life is organized around problems. What to do next, how to fix something, what someone meant by what they said, whether you're on track. The mind is almost always in problem-solving mode, scanning for the next thing that needs attention.</p>
-          <p>This pointer asks: what happens when you stop?</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-4">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Think of something you're currently trying to figure out. A decision, a worry, a plan, a problem at work. Just let it come to mind. Feel the weight of it for a moment.</p>
-              <button class="practice-btn" onclick="goStep(4, 2)">I have one</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Now, deliberately set it down. Not forever — just for the next few seconds. Pretend that problem doesn't need solving. Pretend nothing does. Nothing requires your attention right now.</p>
-              <button class="practice-btn" onclick="goStep(4, 3)">I set it down</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>Notice what's here when there's nothing to fix. Don't describe it. Don't analyze it. Don't try to make it into something. Just notice.</p>
-              <button class="practice-btn" onclick="goStep(4, 4)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">What is it like to have no problem?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>Most of waking life is organized around problems. What to do next, how to fix something, what someone meant by what they said, whether you're on track. The mind is almost always in problem-solving mode, scanning for the next thing that needs attention.</p>
+            <p>This pointer asks: what happens when you stop?</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-4">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Think of something you're currently trying to figure out. A decision, a worry, a plan, a problem at work. Just let it come to mind. Feel the weight of it for a moment.</p>
+                <button class="practice-btn" onclick="goStep(4, 2)">I have one</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(4, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>Most people notice something unexpected: a quiet completeness. Not bliss or ecstasy — just an absence of the mental friction that problem-solving generates. A kind of okayness that doesn't need anything added to it.</p>
-                <p>The interesting thing is that this completeness was here the whole time. The problems were overlaid on top of it, not the other way around. Consciousness without a problem to solve is already at rest. Already fine.</p>
-                <p>This raises a question worth sitting with: how much of your suffering is the problem itself, and how much is the act of trying to solve it? If the default state of awareness — when it's not occupied — is already complete, then the restlessness you feel might have less to do with your life and more to do with the mind's habit of searching for what's wrong.</p>
-                <button class="practice-btn outline" onclick="resetPractice(4)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Now, deliberately set it down. Not forever — just for the next few seconds. Pretend that problem doesn't need solving. Pretend nothing does. Nothing requires your attention right now.</p>
+                <button class="practice-btn" onclick="goStep(4, 3)">I set it down</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>Notice what's here when there's nothing to fix. Don't describe it. Don't analyze it. Don't try to make it into something. Just notice.</p>
+                <button class="practice-btn" onclick="goStep(4, 4)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">What is it like to have no problem?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(4, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>Most people notice something unexpected: a quiet completeness. Not bliss or ecstasy — just an absence of the mental friction that problem-solving generates. A kind of okayness that doesn't need anything added to it.</p>
+                  <p>The interesting thing is that this completeness was here the whole time. The problems were overlaid on top of it, not the other way around. Consciousness without a problem to solve is already at rest. Already fine.</p>
+                  <p>This raises a question worth sitting with: how much of your suffering is the problem itself, and how much is the act of trying to solve it? If the default state of awareness — when it's not occupied — is already complete, then the restlessness you feel might have less to do with your life and more to do with the mind's habit of searching for what's wrong.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(4)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -586,52 +785,57 @@ footer a:hover { text-decoration: underline; }
   <!-- 5. The Awareness Is the Same -->
   <div class="pointer-card" id="p-same">
     <div class="pointer-header" onclick="toggle('p-same')">
+      <div class="pointer-num">05</div>
       <div class="pointer-meta">
         <h2>The Awareness Is the Same</h2>
         <p class="pointer-tagline">Notice what doesn't change between pleasure and pain</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>You've had pleasant experiences and unpleasant ones. Moments of ease and moments of frustration. The content of experience varies enormously — but does the awareness itself change? Is the consciousness that knows pain different from the consciousness that knows pleasure?</p>
-          <p>This pointer asks you to look at the container, not the contents.</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-5">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Think of something mildly pleasant. A warm drink, a good song, the feeling of sun on your skin. Let the feeling come. Now notice: you're <em>aware</em> of that pleasant feeling. There's the feeling, and there's the knowing of the feeling.</p>
-              <button class="practice-btn" onclick="goStep(5, 2)">I notice the knowing</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Now let that go. Think of something mildly unpleasant. A frustration, a minor ache, something that annoyed you recently. Let that feeling come instead.</p>
-              <button class="practice-btn" onclick="goStep(5, 3)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>You're aware of this too. The feeling changed entirely — pleasant to unpleasant. But did the <em>awareness</em> change? Is the knowing of discomfort somehow different from the knowing of pleasure? Or is it the same open space, just with different contents passing through it?</p>
-              <button class="practice-btn" onclick="goStep(5, 4)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">Did the awareness change?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>You've had pleasant experiences and unpleasant ones. Moments of ease and moments of frustration. The content of experience varies enormously — but does the awareness itself change? Is the consciousness that knows pain different from the consciousness that knows pleasure?</p>
+            <p>This pointer asks you to look at the container, not the contents.</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-5">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Think of something mildly pleasant. A warm drink, a good song, the feeling of sun on your skin. Let the feeling come. Now notice: you're <em>aware</em> of that pleasant feeling. There's the feeling, and there's the knowing of the feeling.</p>
+                <button class="practice-btn" onclick="goStep(5, 2)">I notice the knowing</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(5, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>Most people notice that the awareness itself — the quality of knowing, of being conscious of experience — has the same character regardless of what it's aware of. Pleasant, unpleasant, boring, exciting — the knowing is the same knowing. It welcomes all of it without distinction.</p>
-                <p>This points at something worth investigating: that awareness isn't separate from what arises in it. It's not a container holding its contents at a distance. It's the ground in which pleasure and pain both appear — and in that ground, neither one disturbs the knowing itself. The awareness that knows frustration is the same awareness that knows ease.</p>
-                <p>This doesn't mean you stop caring about the difference between pleasure and pain. It means there's a dimension of your experience that is undisturbed by either — and that dimension might be more essentially "you" than the feelings you typically identify with.</p>
-                <button class="practice-btn outline" onclick="resetPractice(5)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Now let that go. Think of something mildly unpleasant. A frustration, a minor ache, something that annoyed you recently. Let that feeling come instead.</p>
+                <button class="practice-btn" onclick="goStep(5, 3)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>You're aware of this too. The feeling changed entirely — pleasant to unpleasant. But did the <em>awareness</em> change? Is the knowing of discomfort somehow different from the knowing of pleasure? Or is it the same open space, just with different contents passing through it?</p>
+                <button class="practice-btn" onclick="goStep(5, 4)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">Did the awareness change?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(5, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>Most people notice that the awareness itself — the quality of knowing, of being conscious of experience — has the same character regardless of what it's aware of. Pleasant, unpleasant, boring, exciting — the knowing is the same knowing. It welcomes all of it without distinction.</p>
+                  <p>This points at something worth investigating: that awareness isn't separate from what arises in it. It's not a container holding its contents at a distance. It's the ground in which pleasure and pain both appear — and in that ground, neither one disturbs the knowing itself. The awareness that knows frustration is the same awareness that knows ease.</p>
+                  <p>This doesn't mean you stop caring about the difference between pleasure and pain. It means there's a dimension of your experience that is undisturbed by either — and that dimension might be more essentially "you" than the feelings you typically identify with.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(5)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -643,52 +847,57 @@ footer a:hover { text-decoration: underline; }
   <!-- 6. Less, Not More -->
   <div class="pointer-card" id="p-less">
     <div class="pointer-header" onclick="toggle('p-less')">
+      <div class="pointer-num">06</div>
       <div class="pointer-meta">
         <h2>Resting as Awareness Is Less, Not More</h2>
         <p class="pointer-tagline">You're not trying to add something — you're trying to stop</p>
       </div>
-      <div class="pointer-toggle">+</div>
+      <div class="pointer-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
+      </div>
     </div>
     <div class="pointer-body">
-      <div class="pointer-content">
-        <div class="section">
-          <div class="section-label">The Setup</div>
-          <p>There's a common assumption about meditation: that it requires doing something extra. Adding concentration. Manufacturing calm. Achieving a special state. The effort feels like climbing — you're trying to get somewhere higher than where you are.</p>
-          <p>This pointer inverts that entirely. Resting as awareness isn't about adding. It's about what's already here when you subtract.</p>
-        </div>
-        <div class="section">
-          <div class="section-label">Try It</div>
-          <div class="practice-area" id="practice-6">
-            <div class="practice-step visible" data-step="1">
-              <div class="step-progress"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Notice how your mind is working right now. There's effort happening — reading, comprehending, maybe evaluating. Commentary running in the background. That's all activity being added on top of the basic fact of being conscious.</p>
-              <button class="practice-btn" onclick="goStep(6, 2)">Ready</button>
-            </div>
-            <div class="practice-step" data-step="2">
-              <div class="step-progress"><span class="dot done"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-              <p>Now try to do less. Not nothing — just less. Let the effort of comprehension soften. Let the mental commentary quiet by one degree. Don't try to stop thinking. Just ease off the effort by maybe ten percent.</p>
-              <button class="practice-btn" onclick="goStep(6, 3)">Continue</button>
-            </div>
-            <div class="practice-step" data-step="3">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span class="dot"></span></div>
-              <p>Notice that as you do less, you don't become less conscious. You might actually become <em>more</em> aware — of the room, of sensations, of the space around the words. Consciousness doesn't dim when you stop efforting. If anything, it opens up.</p>
-              <button class="practice-btn" onclick="goStep(6, 4)">I notice</button>
-            </div>
-            <div class="practice-step" data-step="4">
-              <div class="step-progress"><span class="dot done"></span><span class="dot done"></span><span class="dot done"></span><span class="dot active"></span></div>
-              <div class="pause-content">
-                <div class="breathing-dots">· · ·</div>
-                <p class="pause-question">What's here when you stop adding?</p>
+      <div class="pointer-body-inner">
+        <div class="pointer-content">
+          <div class="section">
+            <div class="section-label">The Setup</div>
+            <p>There's a common assumption about meditation: that it requires doing something extra. Adding concentration. Manufacturing calm. Achieving a special state. The effort feels like climbing — you're trying to get somewhere higher than where you are.</p>
+            <p>This pointer inverts that entirely. Resting as awareness isn't about adding. It's about what's already here when you subtract.</p>
+          </div>
+          <div class="section">
+            <div class="section-label">Try It</div>
+            <div class="practice-area" id="practice-6">
+              <div class="practice-step visible" data-step="1">
+                <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Notice how your mind is working right now. There's effort happening — reading, comprehending, maybe evaluating. Commentary running in the background. That's all activity being added on top of the basic fact of being conscious.</p>
+                <button class="practice-btn" onclick="goStep(6, 2)">Ready</button>
               </div>
-              <div style="text-align: center;"><button class="practice-btn" onclick="goStep(6, 5)">Continue</button></div>
-            </div>
-            <div class="practice-step" data-step="5">
-              <div class="reflection-content">
-                <div class="section-label">What Happens</div>
-                <p>Most contemplative traditions describe awakening not as gaining something but as removing what's in the way. Awareness isn't something you produce through effort. It's what's already here when you stop efforting. The less you do, the more clearly it reveals itself.</p>
-                <p>This is counterintuitive because in every other domain, results require work. But consciousness is the one place where the opposite holds. You can't try your way to awareness — you can only relax your way there. It's not an achievement. It's what remains when you stop achieving.</p>
-                <p>If this feels underwhelming — if you expected something more dramatic — that's actually the point. The recognition that awareness is already here, already complete, already enough, tends to be quiet. Not flashy. Just clear.</p>
-                <button class="practice-btn outline" onclick="resetPractice(6)">Try it again</button>
+              <div class="practice-step" data-step="2">
+                <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
+                <p>Now try to do less. Not nothing — just less. Let the effort of comprehension soften. Let the mental commentary quiet by one degree. Don't try to stop thinking. Just ease off the effort by maybe ten percent.</p>
+                <button class="practice-btn" onclick="goStep(6, 3)">Continue</button>
+              </div>
+              <div class="practice-step" data-step="3">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
+                <p>Notice that as you do less, you don't become less conscious. You might actually become <em>more</em> aware — of the room, of sensations, of the space around the words. Consciousness doesn't dim when you stop efforting. If anything, it opens up.</p>
+                <button class="practice-btn" onclick="goStep(6, 4)">I notice</button>
+              </div>
+              <div class="practice-step" data-step="4">
+                <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
+                <div class="pause-content">
+                  <div class="breath-ring"></div>
+                  <p class="pause-question">What's here when you stop adding?</p>
+                </div>
+                <div style="text-align: center;"><button class="practice-btn" onclick="goStep(6, 5)">Continue</button></div>
+              </div>
+              <div class="practice-step" data-step="5">
+                <div class="reflection-content">
+                  <div class="section-label">What Happens</div>
+                  <p>Most contemplative traditions describe awakening not as gaining something but as removing what's in the way. Awareness isn't something you produce through effort. It's what's already here when you stop efforting. The less you do, the more clearly it reveals itself.</p>
+                  <p>This is counterintuitive because in every other domain, results require work. But consciousness is the one place where the opposite holds. You can't try your way to awareness — you can only relax your way there. It's not an achievement. It's what remains when you stop achieving.</p>
+                  <p>If this feels underwhelming — if you expected something more dramatic — that's actually the point. The recognition that awareness is already here, already complete, already enough, tends to be quiet. Not flashy. Just clear.</p>
+                  <button class="practice-btn outline" onclick="resetPractice(6)">Try it again</button>
+                </div>
               </div>
             </div>
           </div>
@@ -705,7 +914,14 @@ footer a:hover { text-decoration: underline; }
 
 <script>
 function toggle(id) {
-  document.getElementById(id).classList.toggle('open');
+  var card = document.getElementById(id);
+  var wasOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (!wasOpen) {
+    setTimeout(function() {
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
 }
 
 function goStep(practiceNum, step) {
