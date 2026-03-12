@@ -97,12 +97,12 @@ body {
 
 .hero-glow {
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: 400px;
+  height: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -55%);
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(45, 90, 39, 0.05) 0%, rgba(45, 90, 39, 0.02) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -141,6 +141,7 @@ body {
   z-index: 1;
   max-width: 520px;
   margin: 0 auto;
+  text-wrap: pretty;
 }
 
 /* ---- MAIN ---- */
@@ -155,7 +156,7 @@ main {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   position: relative;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease);
@@ -284,7 +285,7 @@ main {
 }
 
 .pointer-toggle svg {
-  transition: transform 0.35s var(--ease);
+  transition: transform 0.4s var(--ease-spring);
 }
 
 .pointer-card.open .pointer-toggle {
@@ -342,6 +343,15 @@ main {
 
 .section p:last-child { margin-bottom: 0; }
 
+.section p em,
+.practice-step p em,
+.reflection-content p em {
+  font-style: italic;
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
 /* ---- PRACTICE AREA ---- */
 .practice-area {
   background: linear-gradient(135deg, #f7f9fb 0%, #f0f4f8 100%);
@@ -370,6 +380,16 @@ main {
 }
 
 /* Segmented progress bar */
+.step-counter {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
 .step-progress {
   display: flex;
   gap: 4px;
@@ -632,6 +652,7 @@ footer {
   font-family: var(--font-sans);
   color: var(--text-tertiary);
   font-size: 0.82rem;
+  letter-spacing: 0.2px;
 }
 
 footer a {
@@ -762,6 +783,7 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-1">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Rest your gaze on the dot below. Don't stare — just let your attention settle on it, the way your eyes rest on a candle flame.</p>
                 <div class="focal-wrap"><div class="focal-dot" id="focal"></div></div>
@@ -769,18 +791,21 @@ footer a:focus-visible {
                 <button class="practice-btn" onclick="goStep(1, 2)">Ready</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Notice the structure of what's happening. There seems to be <em>you</em> — the one doing the looking — and <em>it</em> — the thing being looked at. A subject here, an object there.</p>
                 <p>That duality feels so obvious it's barely worth stating.</p>
                 <button class="practice-btn" onclick="goStep(1, 3)">Continue</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>Keep your eyes right here. Now — without moving them — try to find what's doing the looking. Not with your eyes. This isn't visual. Just turn your attention back toward wherever the seeing seems to be coming from.</p>
                 <p>Don't reach for an answer. Just look. Take a few seconds.</p>
                 <button class="practice-btn" onclick="goStep(1, 4)">I looked</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -831,21 +856,25 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-2">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Close your eyes for a moment, or soften your gaze. Wait for a thought to arrive. Don't go looking for one. Just wait, the way you'd wait for a bus.</p>
                 <button class="practice-btn" onclick="goStep(2, 2)">A thought came</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>A thought appeared — a word, an image, a fragment of planning or remembering. Now notice: did you choose it? Did you decide to think that specific thing at that specific moment? Or did it just appear, the way a sound appears in a room?</p>
                 <button class="practice-btn" onclick="goStep(2, 3)">Continue</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>Wait for the next one. Same question. Watch it arrive. Notice that you didn't send for it. It showed up on its own, and now it's here, and soon it will dissolve and be replaced by another one you also didn't choose.</p>
                 <button class="practice-btn" onclick="goStep(2, 4)">I noticed</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -896,22 +925,26 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-3">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Right now, just notice that you're here. Reading this. Aware. Present. You know what this feels like — the simple fact of being conscious in this moment.</p>
                 <button class="practice-btn" onclick="goStep(3, 2)">I'm here</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>At some point — maybe already, maybe in a few seconds — your mind will wander. A thought will pull you in. Planning, remembering, narrating. You won't notice it happening. That's the nature of distraction: it's invisible until it's over.</p>
                 <button class="practice-btn" onclick="goStep(3, 3)">Continue</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>At some point after that, you'll notice. You'll realize: <em>I was gone. Now I'm back.</em> That moment — the noticing — is the practice. Not the sustained focus that came before. Not the wandering. The return. That's it.</p>
                 <p>There is no distance between being lost and being found. The gap is always zero.</p>
                 <button class="practice-btn" onclick="goStep(3, 4)">Continue</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -962,21 +995,25 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-4">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Think of something you're currently trying to figure out. A decision, a worry, a plan, a problem at work. Just let it come to mind. Feel the weight of it for a moment.</p>
                 <button class="practice-btn" onclick="goStep(4, 2)">I have one</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Now, deliberately set it down. Not forever — just for the next few seconds. Pretend that problem doesn't need solving. Pretend nothing does. Nothing requires your attention right now.</p>
                 <button class="practice-btn" onclick="goStep(4, 3)">I set it down</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>Notice what's here when there's nothing to fix. Don't describe it. Don't analyze it. Don't try to make it into something. Just notice.</p>
                 <button class="practice-btn" onclick="goStep(4, 4)">Continue</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -1027,21 +1064,25 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-5">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Think of something mildly pleasant. A warm drink, a good song, the feeling of sun on your skin. Let the feeling come. Now notice: you're <em>aware</em> of that pleasant feeling. There's the feeling, and there's the knowing of the feeling.</p>
                 <button class="practice-btn" onclick="goStep(5, 2)">I notice the knowing</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Now let that go. Think of something mildly unpleasant. A frustration, a minor ache, something that annoyed you recently. Let that feeling come instead.</p>
                 <button class="practice-btn" onclick="goStep(5, 3)">Continue</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>You're aware of this too. The feeling changed entirely — pleasant to unpleasant. But did the <em>awareness</em> change? Is the knowing of discomfort somehow different from the knowing of pleasure? Or is it the same open space, just with different contents passing through it?</p>
                 <button class="practice-btn" onclick="goStep(5, 4)">Continue</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -1092,21 +1133,25 @@ footer a:focus-visible {
             <div class="section-label">Try It</div>
             <div class="practice-area" id="practice-6">
               <div class="practice-step visible" data-step="1">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Notice how your mind is working right now. There's effort happening — reading, comprehending, maybe evaluating. Commentary running in the background. That's all activity being added on top of the basic fact of being conscious.</p>
                 <button class="practice-btn" onclick="goStep(6, 2)">Ready</button>
               </div>
               <div class="practice-step" data-step="2">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg active"></span><span class="seg"></span><span class="seg"></span></div>
                 <p>Now try to do less. Not nothing — just less. Let the effort of comprehension soften. Let the mental commentary quiet by one degree. Don't try to stop thinking. Just ease off the effort by maybe ten percent.</p>
                 <button class="practice-btn" onclick="goStep(6, 3)">Continue</button>
               </div>
               <div class="practice-step" data-step="3">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
                 <p>Notice that as you do less, you don't become less conscious. You might actually become <em>more</em> aware — of the room, of sensations, of the space around the words. Consciousness doesn't dim when you stop efforting. If anything, it opens up.</p>
                 <button class="practice-btn" onclick="goStep(6, 4)">I notice</button>
               </div>
               <div class="practice-step" data-step="4">
+                <div class="step-counter"></div>
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span></div>
                 <div class="pause-content">
                   <div class="breath-ring"></div>
@@ -1159,6 +1204,20 @@ function toggle(id) {
   }
 }
 
+function updateStepCounters() {
+  var areas = document.querySelectorAll('.practice-area');
+  for (var a = 0; a < areas.length; a++) {
+    var visible = areas[a].querySelector('.practice-step.visible');
+    if (!visible) continue;
+    var stepNum = parseInt(visible.dataset.step);
+    var total = areas[a].querySelectorAll('.practice-step').length - 1; // exclude reflection
+    if (stepNum <= total) {
+      var counter = visible.querySelector('.step-counter');
+      if (counter) counter.textContent = 'Step ' + stepNum + ' of ' + total;
+    }
+  }
+}
+
 function goStep(practiceNum, step) {
   var area = document.getElementById('practice-' + practiceNum);
   var steps = area.querySelectorAll('.practice-step');
@@ -1173,6 +1232,7 @@ function goStep(practiceNum, step) {
     if (step === 5) {
       markExplored(practiceNum);
     }
+    updateStepCounters();
     setTimeout(function() {
       area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 60);
@@ -1225,6 +1285,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
+  updateStepCounters();
   var ids = ['p-looker', 'p-thought', 'p-begin', 'p-remains', 'p-same', 'p-less'];
   var explored = 0;
   for (var j = 0; j < ids.length; j++) {
