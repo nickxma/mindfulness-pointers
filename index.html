@@ -117,13 +117,11 @@ body {
   display: inline-block;
   font-family: var(--font-sans);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 5px 14px;
-  border-radius: 20px;
+  color: var(--text-tertiary);
+  padding: 0;
   margin-bottom: 20px;
   position: relative;
   z-index: 1;
@@ -302,7 +300,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--text-tertiary);
   margin-bottom: 14px;
 }
 
@@ -636,9 +634,9 @@ footer a:focus-visible {
             <div class="practice-area" id="practice-1">
               <div class="practice-step visible" data-step="1">
                 <div class="step-progress"><span class="seg active"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
-                <p>Pick something to look at. Your hand, a spot on the wall, the edge of your screen. Let your attention rest on it for a moment.</p>
+                <p>Rest your gaze on the dot below. Don't stare — just let your attention settle on it, the way your eyes rest on a candle flame.</p>
                 <div class="focal-wrap"><div class="focal-dot" id="focal"></div></div>
-                <p>Just notice what it's like to look at something.</p>
+                <p>Notice what it's like to look at something.</p>
                 <button class="practice-btn" onclick="goStep(1, 2)">Ready</button>
               </div>
               <div class="practice-step" data-step="2">
@@ -649,8 +647,8 @@ footer a:focus-visible {
               </div>
               <div class="practice-step" data-step="3">
                 <div class="step-progress"><span class="seg done"></span><span class="seg done"></span><span class="seg active"></span><span class="seg"></span></div>
-                <p>Now — gently, without thinking about it — try to find what's doing the looking. Not with your eyes. This isn't visual. Just turn your attention toward wherever the looking seems to be coming from. Don't reach for an answer. Don't explain it to yourself.</p>
-                <p>Take a few seconds. There's no rush.</p>
+                <p>Keep your eyes right here. Now — without moving them — try to find what's doing the looking. Not with your eyes. This isn't visual. Just turn your attention back toward wherever the seeing seems to be coming from.</p>
+                <p>Don't reach for an answer. Just look. Take a few seconds.</p>
                 <button class="practice-btn" onclick="goStep(1, 4)">I looked</button>
               </div>
               <div class="practice-step" data-step="4">
@@ -1003,8 +1001,15 @@ function toggle(id) {
   header.setAttribute('aria-expanded', !wasOpen);
   if (!wasOpen) {
     setTimeout(function() {
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+      var headerRect = card.getBoundingClientRect();
+      var navHeight = 60;
+      if (headerRect.top < navHeight || headerRect.top > window.innerHeight * 0.3) {
+        window.scrollTo({
+          top: window.scrollY + headerRect.top - navHeight - 12,
+          behavior: 'smooth'
+        });
+      }
+    }, 80);
   }
 }
 
