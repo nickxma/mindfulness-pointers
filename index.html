@@ -210,7 +210,7 @@ main {
 }
 
 .pointer-header:hover {
-  background: rgba(45, 90, 39, 0.02);
+  background: rgba(50, 50, 93, 0.02);
 }
 
 .pointer-header:focus-visible {
@@ -252,6 +252,22 @@ main {
   color: var(--text-tertiary);
   font-style: italic;
   line-height: 1.5;
+}
+
+.pointer-explored {
+  display: none;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.pointer-card.explored .pointer-explored {
+  display: block;
 }
 
 .pointer-toggle {
@@ -418,11 +434,13 @@ main {
 /* ---- BUTTONS ---- */
 .practice-btn {
   font-family: var(--font-sans);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--accent);
   color: white;
   border: none;
-  padding: 11px 28px;
+  padding: 11px 26px;
   border-radius: 100px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -433,10 +451,23 @@ main {
   box-shadow: 0 2px 5px rgba(45, 90, 39, 0.2);
 }
 
+.practice-btn::after {
+  content: '\2192';
+  display: inline-block;
+  font-size: 0.9em;
+  transition: transform 0.2s var(--ease);
+  opacity: 0.7;
+}
+
 .practice-btn:hover {
   background: #234a1f;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(45, 90, 39, 0.25);
+}
+
+.practice-btn:hover::after {
+  transform: translateX(3px);
+  opacity: 1;
 }
 
 .practice-btn:active {
@@ -456,11 +487,21 @@ main {
   box-shadow: none;
 }
 
+.practice-btn.outline::after {
+  content: '\21BA';
+  opacity: 0.5;
+}
+
 .practice-btn.outline:hover {
   background: var(--accent-soft);
   border-color: var(--accent);
   box-shadow: 0 2px 8px rgba(45, 90, 39, 0.1);
   transform: translateY(-1px);
+}
+
+.practice-btn.outline:hover::after {
+  transform: none;
+  opacity: 0.8;
 }
 
 .practice-btn.outline:active {
@@ -529,11 +570,27 @@ main {
   border: 1.5px solid var(--accent);
   margin: 0 auto 32px;
   animation: breatheRing 5s ease-in-out infinite;
+  position: relative;
+}
+
+.breath-ring::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  animation: breatheOuter 5s ease-in-out infinite;
 }
 
 @keyframes breatheRing {
-  0%, 100% { transform: scale(0.7); opacity: 0.12; border-width: 2px; }
-  50% { transform: scale(1); opacity: 0.35; border-width: 1.5px; }
+  0%, 100% { transform: scale(0.7); opacity: 0.15; border-width: 2px; }
+  50% { transform: scale(1); opacity: 0.4; border-width: 1.5px; }
+}
+
+@keyframes breatheOuter {
+  0%, 100% { transform: scale(0.7); opacity: 0; }
+  50% { transform: scale(1); opacity: 0.12; }
 }
 
 .pause-question {
@@ -548,7 +605,8 @@ main {
 .reflection-content {
   position: relative;
   padding-left: 20px;
-  border-left: 2px solid var(--accent-soft);
+  border-left: 2px solid var(--accent);
+  border-image: linear-gradient(to bottom, var(--accent), var(--accent-soft)) 1;
 }
 
 .reflection-content .section-label {
@@ -615,6 +673,11 @@ footer a:focus-visible {
 
   .focal-dot {
     transition: none;
+    animation: none;
+  }
+
+  .breath-ring::after {
+    animation: none;
   }
 }
 
@@ -667,7 +730,7 @@ footer a:focus-visible {
 
 <div class="hero">
   <div class="hero-glow"></div>
-  <div class="hero-count">6 Pointers</div>
+  <div class="hero-count"><span id="explored-count"></span>6 Pointers</div>
   <h1>Pointers</h1>
   <p class="intro">In contemplative practice, a pointer is an instruction that can't be understood by thinking about it. It points at something you have to notice directly. Each one below includes a guided practice you can try right now.</p>
 </div>
@@ -681,6 +744,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>Looking for the Looker</h2>
         <p class="pointer-tagline">Turn your attention toward its source</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -749,6 +813,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>You Are Not This Next Thought</h2>
         <p class="pointer-tagline">Wait for a thought and watch what happens</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -813,6 +878,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>Beginning Again</h2>
         <p class="pointer-tagline">The moment you notice you're lost is the moment you're found</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -878,6 +944,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>What Remains When There Is No Problem to Solve?</h2>
         <p class="pointer-tagline">Drop everything and notice what's left</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -942,6 +1009,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>The Awareness Is the Same</h2>
         <p class="pointer-tagline">Notice what doesn't change between pleasure and pain</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -1006,6 +1074,7 @@ footer a:focus-visible {
       <div class="pointer-meta">
         <h2>Resting as Awareness Is Less, Not More</h2>
         <p class="pointer-tagline">You're not trying to add something — you're trying to stop</p>
+        <span class="pointer-explored">Explored</span>
       </div>
       <div class="pointer-toggle" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>
@@ -1101,7 +1170,22 @@ function goStep(practiceNum, step) {
       var focal = document.getElementById('focal');
       if (focal) focal.classList.add('dissolve');
     }
+    if (step === 5) {
+      markExplored(practiceNum);
+    }
+    setTimeout(function() {
+      area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
   }
+}
+
+var pointerIds = { 1: 'p-looker', 2: 'p-thought', 3: 'p-begin', 4: 'p-remains', 5: 'p-same', 6: 'p-less' };
+function markExplored(num) {
+  var id = pointerIds[num];
+  if (!id) return;
+  localStorage.setItem('poa-explored-' + id, '1');
+  var card = document.getElementById(id);
+  if (card) card.classList.add('explored');
 }
 
 function resetPractice(practiceNum) {
@@ -1140,6 +1224,19 @@ document.addEventListener('DOMContentLoaded', function() {
         hint.classList.add('saved');
       }
     }
+  }
+  var ids = ['p-looker', 'p-thought', 'p-begin', 'p-remains', 'p-same', 'p-less'];
+  var explored = 0;
+  for (var j = 0; j < ids.length; j++) {
+    if (localStorage.getItem('poa-explored-' + ids[j])) {
+      var card = document.getElementById(ids[j]);
+      if (card) card.classList.add('explored');
+      explored++;
+    }
+  }
+  var countEl = document.getElementById('explored-count');
+  if (countEl && explored > 0) {
+    countEl.textContent = explored + ' of ';
   }
 });
 </script>
