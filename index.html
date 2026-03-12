@@ -271,6 +271,10 @@ main {
   display: block;
 }
 
+.pointer-card.explored .pointer-num {
+  color: var(--accent);
+}
+
 .pointer-toggle {
   width: 32px;
   height: 32px;
@@ -388,6 +392,7 @@ main {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 8px;
+  min-height: 0.62rem;
 }
 
 .step-progress {
@@ -1255,6 +1260,8 @@ function resetPractice(practiceNum) {
   steps[0].classList.add('visible');
   var focal = document.getElementById('focal');
   if (focal) focal.classList.remove('dissolve');
+  updateStepCounters();
+  area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function saveJournal(el) {
