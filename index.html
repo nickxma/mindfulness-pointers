@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pointers — Paradox of Acceptance</title>
+<meta name="description" content="Contemplative pointers — instructions that can't be understood by thinking about them. Each one points at something you have to notice directly.">
+<meta property="og:title" content="Pointers — Paradox of Acceptance">
+<meta property="og:description" content="Instructions that only make sense when you follow them. Each pointer guides you through a contemplative practice you can do right now.">
+<meta property="og:type" content="website">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --border: #e4e2dc;
+  --text: #1a1a18;
+  --text-muted: #6b6966;
+  --accent: #2d5a27;
+  --accent-light: #eef3ec;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+nav {
+  padding: 20px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+nav a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav a:hover { color: var(--accent); }
+
+header {
+  text-align: center;
+  padding: 40px 24px 48px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.intro {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* Pointer Cards */
+.pointer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: border-color 0.3s;
+}
+
+.pointer-card.open {
+  border-color: var(--accent);
+}
+
+.pointer-header {
+  padding: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  transition: background 0.2s;
+}
+
+.pointer-header:hover {
+  background: rgba(45, 90, 39, 0.03);
+}
+
+.pointer-meta { flex: 1; }
+
+.pointer-meta h2 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.pointer-tagline {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.pointer-toggle {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: all 0.3s;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pointer-card.open .pointer-toggle {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  transform: rotate(45deg);
+}
+
+.pointer-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.pointer-card.open .pointer-body {
+  max-height: 4000px;
+}
+
+.pointer-content {
+  padding: 0 28px 32px;
+  border-top: 1px solid var(--border);
+}
+
+/* Sections */
+.section {
+  margin-top: 32px;
+}
+
+.section-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.section p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+.section p:last-child { margin-bottom: 0; }
+
+/* Practice Area */
+.practice-area {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-top: 16px;
+  min-height: 180px;
+}
+
+.practice-step {
+  display: none;
+  animation: stepIn 0.5s ease;
+}
+
+.practice-step.visible {
+  display: block;
+}
+
+.step-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.step-progress .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s;
+}
+
+.step-progress .dot.active {
+  background: var(--accent);
+}
+
+.step-progress .dot.done {
+  background: var(--accent);
+  opacity: 0.4;
+}
+
+.step-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.practice-step p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin-bottom: 14px;
+}
+
+/* Focal dot */
+.focal-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 12px;
+}
+
+.focal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: all 1.2s ease;
+}
+
+.focal-dot.dissolve {
+  width: 56px;
+  height: 56px;
+  background: transparent;
+  border: 1px solid var(--border);
+  opacity: 0.4;
+}
+
+/* Buttons */
+.practice-btn {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.practice-btn:hover { background: #234a1f; }
+
+.practice-btn.outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+
+.practice-btn.outline:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+/* Pause */
+.pause-content {
+  text-align: center;
+  padding: 36px 0;
+}
+
+.breathing-dots {
+  font-size: 1.5rem;
+  letter-spacing: 0.4em;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.pause-question {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.85; }
+}
+
+/* Reflection */
+.reflection-content p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+/* Coming soon */
+.coming-soon {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-muted);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+footer a:hover { text-decoration: underline; }
+
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  header { padding: 30px 20px 36px; }
+  main { padding: 0 16px 60px; }
+  .pointer-header { padding: 22px 20px; }
+  .pointer-content { padding: 0 20px 28px; }
+  .practice-area { padding: 24px 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://nickxma.github.io/paradox-of-acceptance/">← Paradox of Acceptance</a>
+</nav>
+
+<header>
+  <h1>Pointers</h1>
+  <p class="intro">In contemplative practice, a pointer is an instruction that can't be understood by thinking about it. It points at something you have to notice directly.</p>
+</header>
+
+<main>
+
+  <div class="pointer-card open" id="pointer-looker">
+    <div class="pointer-header" onclick="toggle('pointer-looker')">
+      <div class="pointer-meta">
+        <h2>Looking for the Looker</h2>
+        <p class="pointer-tagline">Turn your attention toward its source</p>
+      </div>
+      <div class="pointer-toggle">+</div>
+    </div>
+    <div class="pointer-body">
+      <div class="pointer-content">
+
+        <div class="section">
+          <div class="section-label">The Setup</div>
+          <p>Right now, you're aware of something. These words, the screen, the room around you. In the ordinary experience of being conscious, there seems to be a structure: you, the subject, are over here — behind your eyes, inside your head — and everything else is out there.</p>
+          <p>This pointer asks you to investigate that structure directly. Not to think about whether it holds up. Not to form a view. Just to look.</p>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Try It</div>
+          <div class="practice-area" id="practice-1">
+
+            <div class="practice-step visible" data-step="1">
+              <div class="step-progress">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <p>Pick something to look at. Your hand, a spot on the wall, the edge of your screen. Let your attention rest on it for a moment.</p>
+              <div class="focal-wrap"><div class="focal-dot" id="focal"></div></div>
+              <p>Just notice what it's like to look at something.</p>
+              <button class="practice-btn" onclick="goStep(1, 2)">Ready</button>
+            </div>
+
+            <div class="practice-step" data-step="2">
+              <div class="step-progress">
+                <span class="dot done"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <p>Notice the structure of what's happening. There seems to be <em>you</em> — the one doing the looking — and <em>it</em> — the thing being looked at. A subject here, an object there.</p>
+              <p>That duality feels so obvious it's barely worth stating.</p>
+              <button class="practice-btn" onclick="goStep(1, 3)">Continue</button>
+            </div>
+
+            <div class="practice-step" data-step="3">
+              <div class="step-progress">
+                <span class="dot done"></span>
+                <span class="dot done"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+              </div>
+              <p>Now — gently, without thinking about it — try to find what's doing the looking. Don't reach for an answer. Don't explain it to yourself. Just turn your attention toward wherever it seems to be coming from.</p>
+              <p>Take a few seconds. There's no rush.</p>
+              <button class="practice-btn" onclick="goStep(1, 4)">I looked</button>
+            </div>
+
+            <div class="practice-step" data-step="4">
+              <div class="step-progress">
+                <span class="dot done"></span>
+                <span class="dot done"></span>
+                <span class="dot done"></span>
+                <span class="dot active"></span>
+              </div>
+              <div class="pause-content">
+                <div class="breathing-dots">· · ·</div>
+                <p class="pause-question">What did you find?</p>
+              </div>
+              <div style="text-align: center;">
+                <button class="practice-btn" onclick="goStep(1, 5)">Continue</button>
+              </div>
+            </div>
+
+            <div class="practice-step" data-step="5">
+              <div class="reflection-content">
+                <div class="section-label">What Happens</div>
+                <p>Most people report one of two things. Either the sense of a looker vanished the moment they searched for it — like trying to bite your own teeth. Or they noticed a brief shift: the boundary between "in here" and "out there" flickered, and for a moment there was just seeing, without a seer.</p>
+                <p>This is what the pointer points at. Not an idea about awareness or selfhood, but a direct observation: the feeling of being a subject — of being <em>behind</em> your eyes looking out — doesn't hold up under inspection. When you actually look for it, there's nothing solid there.</p>
+                <p>That doesn't settle any philosophical question. But it points at something worth investigating: the possibility that the subject-object structure of experience, which feels like the most basic fact about being conscious, might be more like a habit of attention than a feature of reality.</p>
+                <button class="practice-btn outline" onclick="resetPractice(1)">Try it again</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p class="coming-soon">More pointers coming soon.</p>
+
+</main>
+
+<footer>
+  <p>Part of <a href="https://nickxma.github.io/paradox-of-acceptance/">Paradox of Acceptance</a></p>
+</footer>
+
+<script>
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function goStep(practiceNum, step) {
+  var area = document.getElementById('practice-' + practiceNum);
+  var steps = area.querySelectorAll('.practice-step');
+  for (var i = 0; i < steps.length; i++) steps[i].classList.remove('visible');
+  var next = area.querySelector('[data-step="' + step + '"]');
+  if (next) {
+    next.classList.add('visible');
+    if (step >= 4) {
+      var focal = document.getElementById('focal');
+      if (focal) focal.classList.add('dissolve');
+    }
+  }
+}
+
+function resetPractice(practiceNum) {
+  var area = document.getElementById('practice-' + practiceNum);
+  var steps = area.querySelectorAll('.practice-step');
+  for (var i = 0; i < steps.length; i++) steps[i].classList.remove('visible');
+  steps[0].classList.add('visible');
+  var focal = document.getElementById('focal');
+  if (focal) focal.classList.remove('dissolve');
+}
+</script>
+
+</body>
+</html>
