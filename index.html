@@ -12,20 +12,23 @@
 <link rel="icon" href="https://paradoxofacceptance.xyz/favicon/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="icon" href="https://paradoxofacceptance.xyz/favicon/favicon-16x16.png" type="image/png" sizes="16x16">
 <link rel="apple-touch-icon" href="https://paradoxofacceptance.xyz/favicon/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f6f9fc;
+  --bg: #fafafa;
   --surface: #ffffff;
   --border: #e3e8ee;
   --border-light: #edf2f7;
-  --text: #0a2540;
-  --text-secondary: #425466;
-  --text-tertiary: #8898aa;
-  --accent: #2d5a27;
-  --accent-soft: #eef3ec;
-  --accent-glow: rgba(45, 90, 39, 0.06);
+  --text: #1a1a2e;
+  --text-secondary: #555;
+  --text-tertiary: #888;
+  --accent: #5469d4;
+  --accent-soft: #eef1fb;
+  --accent-glow: rgba(84, 105, 212, 0.06);
 
   --shadow-sm: 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1px 0 rgba(0,0,0,.07);
   --shadow-md: 0 6px 12px -2px rgba(50,50,93,.12), 0 3px 7px -3px rgba(0,0,0,.08);
@@ -33,12 +36,26 @@
 
   --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --content-width: 1080px;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16161a;
+    --surface: #1e1e24;
+    --border: #2a2a30;
+    --text: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --text-tertiary: #666;
+    --accent: #7b8ff5;
+    --accent-soft: rgba(123, 143, 245, 0.1);
+  }
+  .poa-nav { background: rgba(22, 22, 26, 0.88); }
+}
+
 body {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -48,7 +65,7 @@ body {
 }
 
 ::selection {
-  background: rgba(45, 90, 39, 0.12);
+  background: rgba(84, 105, 212, 0.12);
   color: var(--text);
 }
 
@@ -62,16 +79,16 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background: rgba(246, 249, 252, 0.88);
+  background: rgba(250, 250, 250, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border, #e3e8ee);
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-sans);
 }
 .poa-nav-brand {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--text, #0a2540);
+  color: var(--text);
   text-decoration: none;
   letter-spacing: -0.02em;
 }
@@ -82,15 +99,15 @@ body {
 }
 .poa-nav-links a {
   font-size: 0.82rem;
-  color: var(--text-secondary, #425466);
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.15s;
 }
 .poa-nav-links a:hover {
-  color: var(--text, #0a2540);
+  color: var(--text);
 }
 .poa-nav-links a.active {
-  color: var(--text, #0a2540);
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -110,7 +127,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -55%);
-  background: radial-gradient(circle, rgba(45, 90, 39, 0.05) 0%, rgba(45, 90, 39, 0.02) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(84, 105, 212, 0.05) 0%, rgba(84, 105, 212, 0.02) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -219,7 +236,7 @@ main {
 }
 
 .pointer-header:hover {
-  background: rgba(50, 50, 93, 0.02);
+  background: rgba(84, 105, 212, 0.02);
 }
 
 .pointer-header:focus-visible {
@@ -366,7 +383,7 @@ main {
 
 /* ---- PRACTICE AREA ---- */
 .practice-area {
-  background: linear-gradient(135deg, #f7f9fb 0%, #f0f4f8 100%);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--accent-soft) 100%);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 32px 28px;
@@ -445,13 +462,13 @@ main {
   border-radius: 50%;
   background: var(--text);
   transition: all 1.5s var(--ease);
-  box-shadow: 0 0 0 0 rgba(10, 37, 64, 0.06);
+  box-shadow: 0 0 0 0 rgba(84, 105, 212, 0.06);
   animation: focalPulse 3.5s ease-in-out infinite;
 }
 
 @keyframes focalPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(10, 37, 64, 0.06); }
-  50% { box-shadow: 0 0 0 14px rgba(10, 37, 64, 0.025); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(84, 105, 212, 0.06); }
+  50% { box-shadow: 0 0 0 14px rgba(84, 105, 212, 0.025); }
 }
 
 .focal-dot.dissolve {
@@ -481,7 +498,7 @@ main {
   letter-spacing: 0.01em;
   margin-top: 8px;
   transition: all 0.25s var(--ease);
-  box-shadow: 0 2px 5px rgba(45, 90, 39, 0.2);
+  box-shadow: 0 2px 5px rgba(84, 105, 212, 0.2);
 }
 
 .practice-btn::after {
@@ -493,9 +510,9 @@ main {
 }
 
 .practice-btn:hover {
-  background: #234a1f;
+  background: #4358b8;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.25);
+  box-shadow: 0 4px 12px rgba(84, 105, 212, 0.25);
 }
 
 .practice-btn:hover::after {
@@ -505,7 +522,7 @@ main {
 
 .practice-btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(45, 90, 39, 0.2);
+  box-shadow: 0 1px 2px rgba(84, 105, 212, 0.2);
 }
 
 .practice-btn:focus-visible {
@@ -528,7 +545,7 @@ main {
 .practice-btn.outline:hover {
   background: var(--accent-soft);
   border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(45, 90, 39, 0.1);
+  box-shadow: 0 2px 8px rgba(84, 105, 212, 0.1);
   transform: translateY(-1px);
 }
 
@@ -551,7 +568,7 @@ main {
 .journal-field {
   display: block;
   width: 100%;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-sans);
   font-size: 0.95rem;
   line-height: 1.7;
   color: var(--text);
@@ -568,8 +585,8 @@ main {
 
 .journal-field:focus {
   outline: none;
-  border-color: rgba(45, 90, 39, 0.4);
-  box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.08), 0 1px 2px rgba(0,0,0,.04);
+  border-color: rgba(84, 105, 212, 0.4);
+  box-shadow: 0 0 0 3px rgba(84, 105, 212, 0.08), 0 1px 2px rgba(0,0,0,.04);
 }
 
 .journal-field::placeholder {
@@ -659,9 +676,9 @@ main {
 
 /* ---- FOOTER ---- */
 .site-footer {
-  border-top: 1px solid var(--border, #e3e8ee);
+  border-top: 1px solid var(--border);
   padding: 48px 24px 40px;
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif);
+  font-family: var(--font-sans);
 }
 .footer-inner {
   max-width: 640px;
@@ -674,13 +691,13 @@ main {
 .footer-brand-link {
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--text, #0a2540);
+  color: var(--text);
   text-decoration: none;
 }
 .footer-brand-link:hover { opacity: 0.7; }
 .footer-tagline {
   font-size: 0.82rem;
-  color: var(--text-tertiary, #8898aa);
+  color: var(--text-tertiary);
   margin-top: 8px;
   line-height: 1.5;
 }
@@ -698,17 +715,17 @@ main {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-tertiary, #8898aa);
+  color: var(--text-tertiary);
   margin-bottom: 4px;
 }
 .footer-col a {
   font-size: 0.82rem;
-  color: var(--text-secondary, #425466);
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.15s;
 }
 .footer-col a:hover {
-  color: var(--text, #0a2540);
+  color: var(--text);
 }
 @media (max-width: 600px) {
   .footer-inner {
